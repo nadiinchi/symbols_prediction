@@ -8,7 +8,10 @@ def auc_roc(target, prediction, vocab_size):
     for c in np.arange(1, vocab_size):
         prediction_c = prediction[:, :, c].ravel()
         target_c = target[:, :, c].ravel()#(target==c).any(axis=-1).ravel()
-        aucs.append(roc_auc_score(target_c, prediction_c))
+        if len(set(target_c)) == 1:
+            aucs.append(roc_auc_score(target_c, prediction_c))
+        else:
+            aucs.append(0)
     return np.array(aucs)
 
 class ModelTest(Callback):
